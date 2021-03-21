@@ -43,9 +43,8 @@ function App() {
     <div className="App">
       <header className="App-header">
         <Router>
-          <Link to="/page">Page</Link>
           <Switch>
-            <Route path="/singin"><Userslogin /></Route>
+            <Route exact path="/"><Userslogin /></Route>
             <Route path="/reguser"><Usersregister /></Route>
             <Route path="/page"><Page /></Route>
           </Switch>
@@ -53,16 +52,6 @@ function App() {
       </header>
     </div >
   );
-  function Page() {
-    return (
-      <div>
-        <p>Welcome to My Awesome App</p>
-        <Link to="/singin">Sign up</Link>
-        <p>or</p>
-        <Link to="/reguser">Registration</Link>
-      </div>
-    )
-  }
 
   function Userslogin() {
     return (
@@ -108,11 +97,19 @@ function App() {
             Check in
           </Button>
           <p>or</p>
-          <Link to="/singin">Sign up</Link>
+          <Link to="/">Sign up</Link>
         </div>
 
       </div>
     );
+  }
+
+  function Page() {
+    return (
+      <div className="WrapperPage">
+        <p>0</p>
+      </div>
+    )
   }
 
   function regForm() {
@@ -120,26 +117,24 @@ function App() {
     let password = document.querySelector('#registerpass').value
     firebase.auth().signOut()
     firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then(() => {
+        window.location.pathname = "/page";
+      })
   }
 
   function loginForm() {
     let email = document.querySelector('#loginemail').value
     let password = document.querySelector('#loginpass').value
     firebase.auth().signInWithEmailAndPassword(email.trim(), password)
-      .then((userCredential) => {
-        // Signed in
-        var user = userCredential.user;
-        console.log(
-          `Congratulation Register & Authorized user: ${user.email
-          } ! You accese to this page`
-        );
+      .then(() => {
+        window.location.pathname = "/page";
       })
       .catch((error) => {
         var errorCode = error.code;
         var errorMessage = error.message;
         console.log(`Wrong ${errorCode} ${errorMessage}`)
       });
-    document.querySelector('form').reset()
+    document.querySelector('form').reset();
   }
 
   function logoutForm() {
@@ -151,6 +146,19 @@ function App() {
   }
 
 }
+
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    if (document.querySelector('.WrapperPage')) {
+      document.querySelector('.WrapperPage').innerHTML = '<p>Welcome to My Awesome App</p>'
+    }
+  } else {
+    if (document.querySelector('.WrapperPage')) {
+      document.querySelector('.WrapperPage').innerHTML = '<p>0</p>'
+    }
+  }
+});
+
 
 export default App;
 

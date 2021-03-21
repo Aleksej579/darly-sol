@@ -28,3 +28,6 @@ p, a {
   color: #90caf9;
   font-size: 16px;
 }
+input {
+  color: #90caf9 !important;
+}
