@@ -67,13 +67,13 @@ function App() {
             color="primary"
             onClick={loginForm}>
             Log in
-        </Button>
+          </Button>
           <Button
             variant="outlined"
             color="primary"
             onClick={logoutForm}>
             Log out
-        </Button>
+          </Button>
           <p>or</p>
           <Link to="/reguser">Registration</Link>
         </div>
